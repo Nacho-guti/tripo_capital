@@ -5,7 +5,8 @@ To accomplish this, I will be carrying out all the data manipulation and optimis
 Disclaimer: I am not a great coder or have never before used git or github, so my terminologies may not be the best.
 
 ## Project Structure
-portfolio-optimization/
+
+ portfolio-optimization/
 ├── data/
 │   ├── raw/                    # Raw Bloomberg data
 │   │   ├── equities/
@@ -32,3 +33,4 @@ portfolio-optimization/
 │   ├── portfolio_constraints.yaml
 │   └── benchmarks.yaml
 └── README.md
+
