@@ -3,7 +3,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 import os
 
-def analyze_etf_data(file_path, risk_free_rate= 4.25/100):
+def analyze_etf_data(file_path, risk_free_rate= 0.0444):
     '''Analyze ETF data from an Excel file and compute key statistics.
     Parameters:
     file_path (str): Path to the Excel file containing ETF data.
@@ -21,7 +21,7 @@ def analyze_etf_data(file_path, risk_free_rate= 4.25/100):
     cutoff_date = df.index.max() - pd.DateOffset(years=3)
     df = df[df.index >= cutoff_date]
     data_years = len(df) / 252 
-    
+
     # Organise from old to new
     df.sort_index(inplace=True)
     # Drop missing values

@@ -2,12 +2,8 @@ import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
 import os
-import sys
 
-
-
-
-def analyze_etf_data(file_path, risk_free_rate=0.0444):
+def analyze_etf_data(file_path, risk_free_rate= 0.0444):
     '''Analyze ETF data from an Excel file and compute key statistics.
     Parameters:
     file_path (str): Path to the Excel file containing ETF data.
@@ -25,6 +21,7 @@ def analyze_etf_data(file_path, risk_free_rate=0.0444):
     cutoff_date = df.index.max() - pd.DateOffset(years=3)
     df = df[df.index >= cutoff_date]
     data_years = len(df) / 252 
+
 
     # Organise from old to new
     df.sort_index(inplace=True)
@@ -64,12 +61,12 @@ def analyze_etf_data(file_path, risk_free_rate=0.0444):
 # analyze_etf_data('Min_vol/em_min_vol_etf.xlsx', risk_free_rate=2.67/100)
 # analyze_etf_data('apple_stock.xlsx', risk_free_rate=4.25/100)
 
-data_path = os.path.join("portfolio-optimization", "data", "raw", "equities", "uk_large_cap")
+data_path = os.path.join("portfolio-optimization", "data", "raw", "alternatives")
 
 files = [
-'uklarge_inv_etf.xlsx',
-'uklarge_ishares_etf.xlsx',
-'uklarge_vanguard_etf.xlsx',
+'aim_data_centr_etf.xlsx',
+'gold_etf.xlsx',
+'vici_reits_aim_etf.xlsx',
 ]
 
 # Run each one
