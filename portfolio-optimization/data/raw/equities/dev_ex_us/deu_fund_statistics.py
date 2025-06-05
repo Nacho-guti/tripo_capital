@@ -17,6 +17,12 @@ def analyze_etf_data(file_path, risk_free_rate= 4.25/100):
     name = df["Name"].dropna().iloc[0]
     print(name)
     
+    # Filter to last 3 years max
+    cutoff_date = df.index.max() - pd.DateOffset(years=3)
+    df = df[df.index >= cutoff_date]
+    data_years = len(df) / 252 
+
+
     # Organise from old to new
     df.sort_index(inplace=True)
     # Drop missing values
@@ -49,6 +55,7 @@ def analyze_etf_data(file_path, risk_free_rate= 4.25/100):
     print(f"Annualised Log Return: {ann_ret:.2%}")
     print(f"Annualised Log Volatility: {ann_vol:.2%}")
     print(f"Sharpe Ratio: {sharpe_ratio:.2f}")
+    print(f"Years of fata used: {data_years:.1f}")
     
 
 # analyze_etf_data('Min_vol/em_min_vol_etf.xlsx', risk_free_rate=2.67/100)
