@@ -1,7 +1,7 @@
 import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
-
+import os
 
 def analyze_etf_data(file_path, risk_free_rate= 4.25/100):
     '''Analyze ETF data from an Excel file and compute key statistics.
@@ -22,15 +22,16 @@ def analyze_etf_data(file_path, risk_free_rate= 4.25/100):
     # Drop missing values
     df.dropna(subset=["Last Price"], inplace=True)
 
+    # daily_returns = df["Last Price"].pct_change().dropna()
     
-    
-    # Compute daily returns
-    daily_returns = df["Last Price"].pct_change().dropna()
+    # Compute daily log returns
+
+    daily_returns = np.log(df["Last Price"] / df["Last Price"].shift(1)).dropna()
 
     # Compute key stats
     mean = daily_returns.mean()
     std_dev = daily_returns.std()
-    ann_ret = (1 + mean) ** 252 - 1
+    ann_ret = daily_returns.mean() * 252  # Annualized return of log returns
     ann_vol = daily_returns.std() * np.sqrt(252)
     sharpe_ratio = (ann_ret - risk_free_rate ) / ann_vol
 
@@ -45,23 +46,34 @@ def analyze_etf_data(file_path, risk_free_rate= 4.25/100):
     print(f"Mean Daily Return: {mean:.4%}")
     print(f"Standard Deviation of Daily Returns: {std_dev:.4%}")
     print(f"CAGR: {cagr:.2%}")
-    print(f"Annualised Return: {ann_ret:.2%}")
-    print(f"Annualised Volatility: {ann_vol:.2%}")
+    print(f"Annualised Log Return: {ann_ret:.2%}")
+    print(f"Annualised Log Volatility: {ann_vol:.2%}")
     print(f"Sharpe Ratio: {sharpe_ratio:.2f}")
     
 
 # analyze_etf_data('Min_vol/em_min_vol_etf.xlsx', risk_free_rate=2.67/100)
 # analyze_etf_data('apple_stock.xlsx', risk_free_rate=4.25/100)
 
+data_path = os.path.join("portfolio-optimization", "data", "raw", "equities", "us")
+
 files = [
-    'uk_large_cap/uklarge_inv_etf.xlsx',
-    'uk_large_cap/uklarge_ishares_etf.xlsx',
-    'uk_large_cap/uklarge_vanguard_etf.xlsx',
+'amu_rai_us_etf.xlsx',
+'ish_na_eq_etf.xlsx',
+'spdr_world_tech.xlsx',
 ]
 
 # Run each one
 for file in files:
+    full_path = os.path.join(data_path, file)
     print("="*60)
-    analyze_etf_data(file)
+    
+
+    # Check if file exists before trying to analyze it
+    if os.path.exists(full_path):
+        analyze_etf_data(full_path)
+    else:
+        print(f"File {full_path} does not exist. Skipping analysis.")
+    
+    
     print("\n")
     
