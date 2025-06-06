@@ -6,7 +6,7 @@ import os
 import pandas as pd
 
 
-from typing import List, Mapping, Union, Optional, Iterable
+from typing import List, Mapping, Union, Optional, Iterable, Tuple
 
 
 class DataLoader(object):
@@ -59,18 +59,12 @@ class DataLoader(object):
             self.buffer.clear()
 
 
-    def load(self):
+    def load(self) -> collections.deque[pd.DataFrame]:
 
-        ''' I/O operations leveraging internal buffer logic. 
-                
-            The idea is that we construct rich enough data structures (i.e., mappings)
-            to fully describe each asset, and store them in a buffer.
-
-            Because processing is neither complex nor extensive, we mostly perform
-            it here, only to clean up after ourselves later on if needed.
-        '''
+        ''' I/O operations leveraging internal buffer logic. Because processing
+                is neither complex nor extensive, we perform it here. '''
        
-        timeseries: collections.deque[Mapping] = collections.deque(maxlen = self.INTERNAL_BUFFER_SIZE)
+        timeseries: collections.deque[pd.DataFrame] = collections.deque(maxlen = self.INTERNAL_BUFFER_SIZE)
 
         while self.buffer:
             filepath: os.PathLike = self.buffer.popleft()
@@ -79,6 +73,7 @@ class DataLoader(object):
             timeseries.append(data)
 
         return timeseries
+
 
     def preprocess(self, filepath: os.PathLike) -> pd.DataFrame:
         
