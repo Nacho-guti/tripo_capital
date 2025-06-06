@@ -54,7 +54,7 @@ def analyze_etf_data(file_path, risk_free_rate= 0.0444):
     print(f"Annualised Log Return: {ann_ret:.2%}")
     print(f"Annualised Log Volatility: {ann_vol:.2%}")
     print(f"Sharpe Ratio: {sharpe_ratio:.2f}")
-    print(f"Years of fata used: {data_years:.1f}")
+    print(f"Years of data used: {data_years:.1f}")
     
     
 
