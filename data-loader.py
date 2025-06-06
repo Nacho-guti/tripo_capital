@@ -28,13 +28,12 @@ class DataLoader(object):
         INTERNAL_BUFFER_SIZE: int = int(50)
 
         def __init__(self, rf: float):
-            
             self.rf = rf
             self.buffer: collections.deque[os.PathLike] = collections.deque(maxlen = self.INTERNAL_BUFFER_SIZE)
 
 
         def push_back(self, pack: Union[os.PathLike, Iterable[os.PathLike]) -> None:
-            
+       
             ''' Queues filenames to buffer.
                 
                 args
@@ -52,11 +51,13 @@ class DataLoader(object):
                 self.buffer.append(pack)
 
 
+
         def kill(self) -> None:
 
             ''' Kills open processes, frees resources '''
-            
+
             self.buffer.clear()
+
 
 
     def load(self) -> collections.deque[pd.DataFrame]:
