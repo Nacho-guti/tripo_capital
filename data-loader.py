@@ -16,9 +16,6 @@ class DataLoader(object):
 
         args
         ----
-            
-            :param filepath: data path (relative or absolute). Since we use
-                [os] any path-like expression should be parsed correctly.
 
             :param rf: riskfree rate. Introduced as a free variable because it
                 is evaluated separately.
@@ -28,12 +25,12 @@ class DataLoader(object):
         INTERNAL_BUFFER_SIZE: int = int(50)
 
         def __init__(self, rf: float):
+
             self.rf = rf
             self.buffer: collections.deque[os.PathLike] = collections.deque(maxlen = self.INTERNAL_BUFFER_SIZE)
 
 
         def push_back(self, pack: Union[os.PathLike, Iterable[os.PathLike]) -> None:
-       
             ''' Queues filenames to buffer.
                 
                 args
@@ -53,7 +50,6 @@ class DataLoader(object):
 
 
         def kill(self) -> None:
-
             ''' Kills open processes, frees resources '''
 
             self.buffer.clear()
@@ -61,7 +57,6 @@ class DataLoader(object):
 
 
     def load(self) -> collections.deque[pd.DataFrame]:
-
         ''' I/O operations leveraging internal buffer logic. Because processing
                 is neither complex nor extensive, we perform it here. '''
        
@@ -77,7 +72,6 @@ class DataLoader(object):
 
 
     def preprocess(self, filepath: os.PathLike) -> pd.DataFrame:
-        
         ''' Performs data preprocessing. It mostly involves index manipulations 
                 for convenience, since the main intent is to load data only. '''
 
