@@ -52,7 +52,7 @@ def _recursive_file_search(path: os.PathLike, condition: str) -> List[os.PathLik
 
 
 def _flat_file_search(path: os.PathLike, condition: Union[str, Tuple[str]]) -> List[os.PathLike]:
-    ''' Standard flat file search to find all files verifying some <condition>.
+    ''' Standard shallow file search to find all files verifying some <condition>.
             To all my unix homies, think of terminal wildcard search command
                 
                                [[ ls *<condition> ]].
@@ -70,7 +70,15 @@ def _flat_file_search(path: os.PathLike, condition: Union[str, Tuple[str]]) -> L
 
     '''
 
-    return NotImplementedError
+    goodgood: List[os.PathLike] = []
+
+    for fname in os.listdir(path):
+        if fname.endswith(condition):
+            goodgood.append(os.path.join(path, fname))
+
+    return goodgood
+
+
 
 
 
@@ -78,5 +86,13 @@ def _flat_file_search(path: os.PathLike, condition: Union[str, Tuple[str]]) -> L
 
 if __name__ == '__main__':
 
-    DIR: os.PathLike = os.path.join(os.getcwd(), 'data')
+    DIR: os.PathLike = os.path.join(os.getcwd(), 'data', 'raw')
     print(_recursive_file_search(path = DIR, condition = ('xls', 'xlsx')))
+    print(_flat_file_search(path = DIR, condition = ('xls', 'xlsx')))
+
+    
+    print(len(_recursive_file_search(path = DIR, condition = ('xls', 'xlsx'))))
+    print(len(_flat_file_search(path = DIR, condition = ('xls', 'xlsx'))))
+
+
+    print(os.listdir(DIR))
