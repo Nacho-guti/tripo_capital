@@ -14,10 +14,11 @@ class DataLoader(object):
     ''' Custom general data loader for irregular 
             financial timeseries. '''
 
+    
     INTERNAL_BUFFER_SIZE: int = int(50)
 
-    def __init__(self):
 
+    def __init__(self):
         self.buffer: collections.deque[os.PathLike] = collections.deque(maxlen = self.INTERNAL_BUFFER_SIZE)
 
 
@@ -31,7 +32,6 @@ class DataLoader(object):
                         packet of filenames to be processed.
 
         '''
-
         if isinstance(pack, collections.abc.Iterable) and len(pack) >= 1:     
             for filename in pack:
                 self.buffer.append(filename)
@@ -43,7 +43,6 @@ class DataLoader(object):
 
     def kill(self) -> None:
         ''' Kills open processes, frees resources '''
-
         self.buffer.clear()
 
 
@@ -51,7 +50,6 @@ class DataLoader(object):
     def load(self) -> collections.deque[pd.DataFrame]:
         ''' I/O operations leveraging internal buffer logic. Because processing
                 is neither complex nor extensive, we perform it here. '''
-       
         timeseries: collections.deque[pd.DataFrame] = collections.deque(maxlen = self.INTERNAL_BUFFER_SIZE)
 
         while self.buffer:
@@ -66,7 +64,6 @@ class DataLoader(object):
     def preprocess(self, filepath: os.PathLike) -> pd.DataFrame:
         ''' Performs data preprocessing. It mostly involves index manipulations 
                 for convenience, since the main intent is to load data only. '''
-
         data: pd.DataFrame = pd.read_excel(io = filepath, index_col = 0, parse_dates = True)
         data = data[data.index >= data.index.max() - pd.DateOffset(years = 3)]
         data.sort_index(inplace = True)
